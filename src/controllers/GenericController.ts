@@ -47,7 +47,7 @@ abstract class GenericController<T> {
 
   abstract update(
     _req: Request,
-    res: Response<T[] | ResponseError>,
+    res: Response<T | ResponseError>,
   ): Promise<typeof res>;
 
   abstract delete(
