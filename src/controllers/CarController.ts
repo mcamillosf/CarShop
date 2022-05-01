@@ -25,14 +25,14 @@ class CarController extends GenericController<Car> {
     try {
       const car = await this.service.create(body);
       if (!car) {
-        return res.status(500).json({ error: this.erros.internal });
+        return res.status(400).json({ error: this.erros.notFound });
       }
       if ('error' in car) {
         return res.status(400).json(car);
       }
       return res.status(201).json(car);
     } catch (error) {
-      return res.status(500).json({ error: this.erros.internal });
+      return res.status(400).json({ error: 'invalid input' });
     }
   };
 
