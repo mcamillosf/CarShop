@@ -7,6 +7,7 @@ export interface Car extends Vehicle {
 }
 
 export const CarSchema = joi.object({
+  _id: joi.string(),
   model: joi.string().min(3).required(),
   year: joi.number().min(1900).max(2022).required(),
   color: joi.string().min(3).required(),
