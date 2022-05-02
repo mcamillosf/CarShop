@@ -7,7 +7,7 @@ export interface Car extends Vehicle {
 }
 
 export const CarSchema = z.object({
-  _id: z.string(),
+  _id: z.string().optional(),
   model: z.string({
     required_error: 'model is required',
     invalid_type_error: 'model must be a string',
@@ -23,7 +23,7 @@ export const CarSchema = z.object({
     required_error: 'color is required',
     invalid_type_error: 'color must be a string',
   }).min(3, { message: 'color must be 3 or more characters long' }),
-  status: z.boolean(),
+  status: z.boolean().optional(),
   buyValue: z.number({
     required_error: 'buyValue is required',
     invalid_type_error: 'buyValue must be a number',
