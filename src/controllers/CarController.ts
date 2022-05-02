@@ -47,7 +47,9 @@ class CarController extends GenericController<Car> {
         ? res.json(car)
         : res.status(404).json({ error: this.erros.notFound });
     } catch (error) {
-      return res.status(500).json({ error: this.erros.internal });
+      return res.status(400).json(
+        { error: 'Id must have 24 hexadecimal characters' },
+      );
     }
   };
 
