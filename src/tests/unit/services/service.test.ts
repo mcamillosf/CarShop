@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import { Model } from 'mongoose';
 import Sinon from 'sinon';
-import ModelTest from '../models/ModelTest';
-import CarServiceTest from './CarServiceTest';
+import ModelTest from '../models/GenericModelTest';
+import GenericServiceTest from './GenericServiceTest';
 
 describe('Service tests', () => {
 
-  const mongoModelTest = new ModelTest();
-  const carServiceTest = new CarServiceTest(mongoModelTest);
+  const genericModelTest = new ModelTest();
+  const genericServiceTest = new GenericServiceTest(genericModelTest);
 
   const objCreateMock = {
     model: 'Audi A3',
@@ -34,7 +34,7 @@ describe('Service tests', () => {
   it('Testa o método create da função instanciada', async () => {
     Sinon.stub(Model, "create").resolves(objCreateMock)
 
-    const resultTest = await carServiceTest.create(objCreateMock);
+    const resultTest = await genericServiceTest.create(objCreateMock);
 
     expect(resultTest).to.be.equal(objCreateMock);
   });
@@ -42,7 +42,7 @@ describe('Service tests', () => {
   it('Testa o método read da função instanciada', async () => {
     Sinon.stub(Model, "find").resolves(findMock)
 
-    const resultTest = await carServiceTest.read();
+    const resultTest = await genericServiceTest.read();
     expect(resultTest).to.be.an('array');
     expect(resultTest[0]).to.be.an('object');
   });
@@ -50,14 +50,14 @@ describe('Service tests', () => {
   it('Testa o método readOne da função instanciada', async () => {
     Sinon.stub(Model, "findOne").resolves({ _id: 1, ...objCreateMock })
 
-    const resultTest = await carServiceTest.readOne('1');
+    const resultTest = await genericServiceTest.readOne('1');
     expect(resultTest).to.deep.equal({ _id: 1, ...objCreateMock });
   });
 
   it('Testa o método update da função instanciada', async () => {
     Sinon.stub(Model, "findOneAndUpdate").resolves({ _id: 5, ...objUpdateMock })
 
-    const resultTest = await carServiceTest.update('5', objUpdateMock);
+    const resultTest = await genericServiceTest.update('5', objUpdateMock);
     expect(resultTest).to.deep.equal({ _id: 5, ...objUpdateMock });
 
   });
@@ -65,8 +65,8 @@ describe('Service tests', () => {
   it('Testa o método delete da função instanciada', async () => {
     Sinon.stub(Model, "findOneAndDelete").resolves()
 
-    await carServiceTest.delete('1');
-    const resultTest2 = await carServiceTest.readOne('1');
+    await genericServiceTest.delete('1');
+    const resultTest2 = await genericServiceTest.readOne('1');
     expect(resultTest2).to.not.includes({ id: 1 });
   });
 
