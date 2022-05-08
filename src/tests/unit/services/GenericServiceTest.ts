@@ -1,6 +1,6 @@
-import { CarSchema, Car } from "../../../interfaces/CarInterface";
+import { Car } from "../../../interfaces/CarInterface";
 import ModelTest from "../models/GenericModelTest";
-import GenericService, { ServiceError } from '../../../services/GenericService';
+import GenericService from '../../../services/GenericService';
 
 class GenericServiceTest extends GenericService<Car> {
   constructor(model = new ModelTest()) {
