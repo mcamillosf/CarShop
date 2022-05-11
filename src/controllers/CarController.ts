@@ -42,6 +42,10 @@ class CarController extends GenericController<Car> {
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
+      if (id.length < 24) {
+        console.log('caiu aqui');
+        return res.status(400).json({ error: this.erros.idLength });
+      }
       const car = await this.service.readOne(id);
       return car
         ? res.json(car)
@@ -61,14 +65,13 @@ class CarController extends GenericController<Car> {
     const { body } = req;
     try {
       if (id.length < 24) {
-        console.log('caiu aqui');
         return res.status(400).json({ error: this.erros.idLength });
       }
       const car = await this.service.update(id, body);
       if (!car) {
         return res.status(404).json({ error: this.erros.notFound });
       }
-      return res.status(201).json(car);
+      return res.status(200).json(car);
     } catch (error) {
       return res.status(500).json({ error: this.erros.internal });
     }
@@ -81,7 +84,6 @@ class CarController extends GenericController<Car> {
     const { id } = req.params;
     try {
       if (id.length < 24) {
-        console.log('caiu aqui');
         return res.status(400).json({ error: this.erros.idLength });
       }
       const car = await this.service.delete(id);
