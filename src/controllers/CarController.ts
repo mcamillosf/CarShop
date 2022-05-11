@@ -5,17 +5,17 @@ import CarService from '../services/CarService';
 import { Car } from '../interfaces/CarInterface';
 
 class CarController extends GenericController<Car> {
-  private _route: string;
+  // private _route: string;
 
   constructor(
     service = new CarService(),
-    route = '/cars',
+    // route = '/cars',
   ) {
     super(service);
-    this._route = route;
+    // this._route = route;
   }
 
-  get route() { return this._route; }
+  // get route() { return this._route; }
 
   create = async (
     req: RequestWithBody<Car>,
@@ -43,7 +43,6 @@ class CarController extends GenericController<Car> {
     const { id } = req.params;
     try {
       if (id.length < 24) {
-        console.log('caiu aqui');
         return res.status(400).json({ error: this.erros.idLength });
       }
       const car = await this.service.readOne(id);

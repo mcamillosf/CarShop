@@ -1,4 +1,4 @@
-import CustomRouter from './routes/GenericRouter';
+import CustomRouter from './routes/carRouter';
 import App from './app';
 
 import CarController from './controllers/CarController';
