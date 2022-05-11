@@ -60,6 +60,10 @@ class CarController extends GenericController<Car> {
     const { id } = req.params;
     const { body } = req;
     try {
+      if (id.length < 24) {
+        console.log('caiu aqui');
+        return res.status(400).json({ error: this.erros.idLength });
+      }
       const car = await this.service.update(id, body);
       if (!car) {
         return res.status(404).json({ error: this.erros.notFound });
@@ -76,10 +80,15 @@ class CarController extends GenericController<Car> {
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
+      if (id.length < 24) {
+        console.log('caiu aqui');
+        return res.status(400).json({ error: this.erros.idLength });
+      }
       const car = await this.service.delete(id);
-      return car
-        ? res.json(car)
-        : res.status(404).json({ error: this.erros.notFound });
+      if (!car) {
+        return res.status(404).json({ error: this.erros.notFound });
+      }
+      return res.status(204).json(car);
     } catch (error) {
       return res.status(500).json({ error: this.erros.internal });
     }
