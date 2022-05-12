@@ -1,77 +1,58 @@
 import { expect } from 'chai';
-import { Model } from 'mongoose';
 import Sinon from 'sinon';
-import GenericServiceTest from '../../../services/CarService';
-import GenericControllerTest from '../../../controllers/CarController';
+import CarService from '../../../services/CarService';
+import CarController from '../../../controllers/CarController';
+import { Request, Response } from 'express';
 
-describe('Controller tests', () => {
+let carService = new CarService();
+let carController = new CarController(carService)
+let car = {
+  _id: "4edd40c86762e0fb12000003",
+ model: "Ferrari Maranello",
+ year: 1963,
+ color: "red",
+ buyValue: 3500000,
+ seatsQty: 2,
+ doorsQty: 2
+}
 
+let carIncomplete = {
+ model: "",
+ year: 1963,
+ color: "red",
+ buyValue: 3500000,
+ seatsQty: 2,
+ doorsQty: 2
+}
+   const fakeReq = {} as Request;
+   const fakeRes= {} as Response;
 
-  const genericServiceTest = new GenericServiceTest();
-  const genericControllerTest = new GenericControllerTest(genericServiceTest);
-  
-    const objCreateMock = {
-    model: 'Audi A3',
-    year: 2016,
-    color: 'Preto',
-    status: true,
-    buyValue: 80000,
-    doorsQty: 4,
-    seatsQty: 5,
-  }
+describe ('Car controller', () => {
+  // beforeAll(() => Sinon.restore())
 
-  const findMock = [{}]
-
-  const objUpdateMock = {
-    model: 'Carango',
-    year: 2000,
-    color: 'Branco',
-    status: true,
-    buyValue: 10000,
-    doorsQty: 2,
-    seatsQty: 2,
-  }
-
-  it('Testa o método create da função instanciada', async () => {
-    Sinon.stub(Model, "create").resolves(objCreateMock)
-
-    const resultTest = await genericServiceTest.create(objCreateMock);
-
-    expect(resultTest).to.be.equal(objCreateMock);
-  });
-
-  it('Testa o método read da função instanciada', async () => {
-    Sinon.stub(Model, "find").resolves(findMock)
-
-    const resultTest = await genericServiceTest.read();
-    expect(resultTest).to.be.an('array');
-    expect(resultTest[0]).to.be.an('object');
-  });
-
-  it('Testa o método readOne da função instanciada', async () => {
-    Sinon.stub(Model, "findOne").resolves({ _id: 1, ...objCreateMock })
-
-    const resultTest = await genericServiceTest.readOne('1');
-    expect(resultTest).to.deep.equal({ _id: 1, ...objCreateMock });
-  });
-
-  it('Testa o método update da função instanciada', async () => {
-    Sinon.stub(Model, "findOneAndUpdate").resolves({ _id: 5, ...objUpdateMock })
-
-    const resultTest = await genericServiceTest.update('5', objUpdateMock);
-    expect(resultTest).to.deep.equal({ _id: 5, ...objUpdateMock });
-
-  });
-
-  it('Testa o método delete da função instanciada', async () => {
-    Sinon.stub(Model, "findOneAndDelete").resolves()
-
-    await genericServiceTest.delete('1');
-    const resultTest2 = await genericServiceTest.readOne('1');
-    expect(resultTest2).to.not.includes({ id: 1 });
-  });
-
-  after(function () {
-    Sinon.restore();
-  });
-});
+  it('retorna o status 500', async () => {
+      Sinon.stub(carService, 'create').resolves(null)
+      fakeReq.body = {}
+      fakeRes.status = Sinon.stub().returns(fakeRes);
+      fakeRes.json = Sinon.stub().returns(null);
+      await carController.create(fakeReq, fakeRes);
+      console.log(fakeRes);
+      expect((fakeRes.status as Sinon.SinonStub).calledWith(500)).to.be.false;
+    });
+    // it('retorna o status 400', async () => {
+    //   Sinon.stub(carService, 'create').resolves(carIncomplete)
+    //   fakeReq.body = {}
+    //   fakeRes.status = Sinon.stub().returns(fakeRes);
+    //   fakeRes.json = Sinon.stub().returns(null);
+    // await carController.create(fakeReq, fakeRes);
+    //   expect((fakeRes.status as Sinon.SinonStub).calledWith(400));
+    // });
+    // it('retorna o status 201', async () => {
+    //   Sinon.stub(carService, 'create').resolves(car)
+    //   fakeReq.body = {}
+    //   fakeRes.status = Sinon.stub().returns(fakeRes);
+    //   fakeRes.json = Sinon.stub().returns(null);
+    // await carController.create(fakeReq, fakeRes);
+    //   expect((fakeRes.status as Sinon.SinonStub).calledWith(201)).to.be.true;
+    // });
+})
