@@ -18,7 +18,7 @@ enum ControllerErrors {
 }
 
 abstract class GenericController<T> {
-  // abstract route: string;
+  abstract route: string;
 
   protected erros = ControllerErrors;
 

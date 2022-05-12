@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import GenericController from '../controllers/GenericController';
 
-class CustomRouter<T> {
+class CarRouter<T> {
   public router: Router;
 
   constructor() {
@@ -20,4 +20,4 @@ class CustomRouter<T> {
   }
 }
 
-export default CustomRouter;
+export default CarRouter;

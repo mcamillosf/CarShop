@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import GenericController, { 
   RequestWithBody, ResponseError } from './GenericController';
-import CarService from '../services/CarService';
-import { Car } from '../interfaces/CarInterface';
+import MotorcycleService from '../services/MotorcycleService';
+import { Motorcycle } from '../interfaces/MotorcycleInterface';
 
-class CarController extends GenericController<Car> {
+class MotorcycleController extends GenericController<Motorcycle> {
   private _route: string;
 
   constructor(
-    service = new CarService(),
-    route = '/cars',
+    service = new MotorcycleService(),
+    route = '/motorcycles',
   ) {
     super(service);
     this._route = route;
@@ -18,19 +18,19 @@ class CarController extends GenericController<Car> {
   get route() { return this._route; }
 
   create = async (
-    req: RequestWithBody<Car>,
-    res: Response<Car | ResponseError>,
+    req: RequestWithBody<Motorcycle>,
+    res: Response<Motorcycle | ResponseError>,
   ): Promise<typeof res> => {
     const { body } = req;
     try {
-      const car = await this.service.create(body);
-      if (!car) {
+      const motorcycle = await this.service.create(body);
+      if (!motorcycle) {
         return res.status(400).json({ error: this.erros.notFound });
       }
-      if ('error' in car) {
-        return res.status(400).json(car);
+      if ('error' in motorcycle) {
+        return res.status(400).json(motorcycle);
       }
-      return res.status(201).json(car);
+      return res.status(201).json(motorcycle);
     } catch (error) {
       return res.status(400).json({ error: 'invalid input' });
     }
@@ -38,16 +38,16 @@ class CarController extends GenericController<Car> {
 
   readOne = async (
     req: Request<{ id: string }>,
-    res: Response<Car | ResponseError>,
+    res: Response<Motorcycle | ResponseError>,
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
       if (id.length < 24) {
         return res.status(400).json({ error: this.erros.idLength });
       }
-      const car = await this.service.readOne(id);
-      return car
-        ? res.json(car)
+      const motorcycle = await this.service.readOne(id);
+      return motorcycle
+        ? res.json(motorcycle)
         : res.status(404).json({ error: this.erros.notFound });
     } catch (error) {
       return res.status(400).json(
@@ -58,7 +58,7 @@ class CarController extends GenericController<Car> {
 
   update = async (
     req: Request,
-    res: Response<Car | ResponseError>,
+    res: Response<Motorcycle | ResponseError>,
   ): Promise<typeof res> => {
     const { id } = req.params;
     const { body } = req;
@@ -66,11 +66,11 @@ class CarController extends GenericController<Car> {
       if (id.length < 24) {
         return res.status(400).json({ error: this.erros.idLength });
       }
-      const car = await this.service.update(id, body);
-      if (!car) {
+      const motorcycle = await this.service.update(id, body);
+      if (!motorcycle) {
         return res.status(404).json({ error: this.erros.notFound });
       }
-      return res.status(200).json(car);
+      return res.status(200).json(motorcycle);
     } catch (error) {
       return res.status(500).json({ error: this.erros.internal });
     }
@@ -78,22 +78,22 @@ class CarController extends GenericController<Car> {
 
   delete = async (
     req: Request<{ id: string }>,
-    res: Response<Car | ResponseError>,
+    res: Response<Motorcycle | ResponseError>,
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
       if (id.length < 24) {
         return res.status(400).json({ error: this.erros.idLength });
       }
-      const car = await this.service.delete(id);
-      if (!car) {
+      const motorcycle = await this.service.delete(id);
+      if (!motorcycle) {
         return res.status(404).json({ error: this.erros.notFound });
       }
-      return res.status(204).json(car);
+      return res.status(204).json(motorcycle);
     } catch (error) {
       return res.status(500).json({ error: this.erros.internal });
     }
   };
 }
 
-export default CarController;
+export default MotorcycleController;
