@@ -2,13 +2,11 @@ import { expect } from 'chai';
 import { Model } from 'mongoose';
 import Sinon from 'sinon';
 import CarService from '../../../services/CarService';
-import CarController from '../../../controllers/CarController';
 
-describe('Controller tests', () => {
+describe('Service tests', () => {
 
 
   const carService = new CarService();
-  const carController = new CarController(carService);
   
     const objCreateMock = {
     model: 'Audi A3',
