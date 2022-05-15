@@ -3,7 +3,6 @@ import Sinon, { SinonStub } from 'sinon';
 import CarService from '../../../services/CarService';
 import CarController from '../../../controllers/CarController';
 import { Request, Response } from 'express';
-// import { ZodError } from 'zod';
 
 class CarServiceMock extends CarService{
   readOne = Sinon.stub()

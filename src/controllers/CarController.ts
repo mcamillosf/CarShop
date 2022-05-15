@@ -36,11 +36,25 @@ class CarController extends GenericController<Car> {
     }
   };
 
-  public async readOne(req: Request, res: Response): Promise<Response> {
-    const result = await this.service.readOne(req.params.id);
-    if (!result) return res.status(404).json({ error: this.erros.notFound });
-    return res.status(200).json(result);
-  }
+  readOne = async (
+    req: Request,
+    res: Response<Car | ResponseError>,
+  ): Promise<typeof res> => {
+    const { id } = req.params;
+    try {
+      if (id.length < 24) {
+        return res.status(400).json({ error: this.erros.idLength });
+      }
+      const car = await this.service.readOne(id);
+      return car
+        ? res.json(car)
+        : res.status(404).json({ error: this.erros.notFound });
+    } catch (error) {
+      return res.status(400).json(
+        { error: 'Id must have 24 hexadecimal characters' },
+      );
+    }
+  };
 
   update = async (
     req: Request,
